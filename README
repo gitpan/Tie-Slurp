@@ -1,0 +1,26 @@
+Tie/Slurp version 0.01
+======================
+
+Tie a scalar to a file.
+
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+none
+
+COPYRIGHT AND LICENCE
+
+Released 2003 GPL/AL
+
+Copyright (C) 2003 David Nicol <davidnico@cpan.org>
+
+
