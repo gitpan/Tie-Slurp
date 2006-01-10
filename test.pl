@@ -1,51 +1,83 @@
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl test.pl'
+use strict;
+use Test::More tests => 10;
+
+# First, make sure we can use Tie::Slurp.
+BEGIN { use_ok('Tie::Slurp'); };
 
 #########################
 
-# change 'tests => 1' to 'tests => last_test_to_print';
+# Then, unlink testfile to clear previous test data.
 
-use Test;
-BEGIN { plan tests => 10 };
-use Tie::Slurp;
-ok(1); # If we made it this far, we're ok.
+my $testfile = 'Tie_Slurp_Test.file';
+
+unlink $testfile if -f $testfile;
+
+# Let's tie; this should return success (blessed scalar).
+
+ok(tie(my $First => 'Tie::Slurp' => $testfile)); 
+
+# Try fetch; this should return undef (because $testfile has no data)
+
+ok(!defined $First);
+
+# Let's store new data; $First should have stored data.
+
+my $testvalue = "process$$" x 20;
+
+$First = $testvalue;
+
+# Fetch again; this should return stored value.
+ok($First eq $testvalue);
+
+# Store another data. $First should get clobbered.
+
+my $teststr2 = 'shortstring';
+
+$First = $teststr2;
+
+# Fetch again; this should return new data;
+
+ok($First eq $teststr2);
 
 #########################
 
-unlink "Tie_Slurp_Test.file";
+# Now, let's check ReadOnly mode.
 
-# tie returns success
-ok(tie my $First => Tie::Slurp => "Tie_Slurp_Test.file"); 
+# Tie again; this time we use Tie::Slurp::ReadOnly.
+ok(tie(my $RO => 'Tie::Slurp::ReadOnly' => $testfile)); 
 
-#initially undefined
-ok($First,undef);
+# Try fetch; this should return the value $First has saved last.
 
-# store returns stored value (no it doesn't -- submitted a docpatch)
-$First="process$$"x20;
+ok($RO eq $teststr2);
 
-# fetch returns stored value
-ok($First,"process$$"x20);
+# Then, we are going to exception check.
 
-# store truncates
-$First = 1;
-ok($First, 1);
+SKIP: {
 
+  # We need Test::Exception but this isn't a standard module.
+  # So check first.
+  eval "use Test::Exception";
+  skip('without Test::Exception',2) if $@;
 
-# RO tie returns success
-ok(tie my $RO => Tie::Slurp::ReadOnly => "Tie_Slurp_Test.file"); 
+  # OK. We have Test::Exception.
+  # Let's try to store new data; $RO should croak.
 
-# file the same as we left it
-ok($RO,1);
+  my $teststr3 = 'should not be stored';
 
-# RO store croaks
-eval {$RO='cheeseburger'};
-ok($@ and print "$@\n");
+  dies_ok(sub { $RO = $teststr3; }, 'OK. ReadOnly croaks');
 
-# and RO is unchanged
-ok(1,$RO);
+  # Fetch again; make sure $RO is not changed.
+  ok($RO eq $teststr2);
+}
 
-# until it is changed
-$First = 'milkshake';
-ok($RO,'milkshake');
+# Lastly, make sure $RO changes if someone else changes the file.
 
+my $teststr4 = 'milkshake';
 
+$First = $teststr4;
+
+ok($RO eq $teststr4);
+
+# All done. Let's clean up.
+
+unlink $testfile;

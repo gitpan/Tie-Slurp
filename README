@@ -1,8 +1,7 @@
-Tie/Slurp version 0.01
+Tie/Slurp version 0.02
 ======================
 
 Tie a scalar to a file.
-
 
 INSTALLATION
 
@@ -21,6 +20,7 @@ COPYRIGHT AND LICENCE
 
 Released 2003 GPL/AL
 
-Copyright (C) 2003 David Nicol <davidnico@cpan.org>
+Copyright (C) 2003,2006 David Nicol <davidnico@cpan.org>,
+                        Kenichi Ishigaki <ishigaki@cpan.org>
 
 
