@@ -1,11 +1,14 @@
+use strict;
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
 WriteMakefile(
     'NAME'		=> 'Tie::Slurp',
-    'VERSION_FROM'	=> 'Slurp.pm', # finds $VERSION
-    'PREREQ_PM'		=> {}, # e.g., Module::Name => 1.1
-    ($] >= 5.005 ?    ## Add these new keywords supported since 5.005
+    'VERSION_FROM'	=> 'Slurp.pm',
+    'PREREQ_PM'		=> {},
+    ($] >= 5.005 ?
       (ABSTRACT_FROM => 'Slurp.pm', # retrieve abstract from module
-       AUTHOR     => 'A. U. Thor <a.u.thor@a.galaxy.far.far.away>') : ()),
+       AUTHOR     => 'David Nicol <davidnico@cpan.org>') : ()
+    ),
+    ($ExtUtils::MakeMaker::VERSION >= 6.31 ?
+      (LICENSE => 'perl') : ()
+    ),
 );

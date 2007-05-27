@@ -1,0 +1,16 @@
+0.03 2007/05/27
+(ishigaki)
+no code changes. updated just for a kwalitee reason.
+added Changes, POD tests, license info
+
+0.02
+(ishigaki)
+enabled strict and warnings. 
+rewrote C<STORE> along the L<perlopentut> way.
+rewrote test to use L<Test::More>.
+rewrote pod and added caveat on 'race condition'.
+
+0.01
+(nicol)
+sysread, syswrite, flock.
+

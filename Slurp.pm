@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 use vars qw/$VERSION/;
-$VERSION = '0.02';
+$VERSION = '0.03';
 use Carp;
 use Fcntl qw(:DEFAULT :flock);
 
@@ -111,23 +111,6 @@ to C<STORE> them. So, if someone access the file while you are changing
 your data, something unwanted may happen. Tie::Slurp is useful, but don't
 use it under severe conditions.
 
-=head1 HISTORY
-
-=over 8
-
-=item 0.02 (ishigaki)
-
-enabled strict and warnings. 
-rewrote C<STORE> along the L<perlopentut> way.
-rewrote test to use L<Test::More>.
-rewrote pod and added caveat on 'race condition'.
-
-=item 0.01 (nicol)
-
-sysread, syswrite, flock.
-
-=back
-
 =head1 AUTHOR
 
 David Nicol, E<lt>davidnico@cpan.orgE<gt>
@@ -143,5 +126,9 @@ L<File::Slurp>
 Abigail's comparison of slurping idioms on p5p, October 2003
 
 L<perlopentut>
+
+=head1 LICENSE
+
+GPL/AL
 
 =cut
